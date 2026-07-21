@@ -1,0 +1,8 @@
+{
+  "name": "aep-skills",
+  "version": "0.1.0",
+  "description": "AEP (Agent Enhancement Proposal) skills: publish-aep, improve-plan, and deep-review. Bundles the AEP spec and helper wrapper.",
+  "author": {
+    "name": "dimkr"
+  }
+}
