@@ -33,4 +33,4 @@ fi
 
 host=$(cat "$host_file")
 
-exec env CGO_ENABLED=0 go run -tags fts5 github.com/dimkr/tootik/cmd/tootik-client@shell -host "$host" "$@"
+exec env CGO_ENABLED=0 go run github.com/dimkr/tootik/cmd/tootik-client@shell -host "$host" "$@"
