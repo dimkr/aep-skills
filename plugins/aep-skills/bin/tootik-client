@@ -1,24 +1,4 @@
 #!/bin/sh
-# tootik-client — thin wrapper bundled with the aep-skills plugin.
-#
-# Runs tootik's cmd/tootik-client from the `shell` branch of
-# github.com/dimkr/tootik via `go run`, so no compiled binary is committed and
-# it works on both Linux and macOS.
-#
-# The tootik instance is selected by a host that is remembered GLOBALLY (not
-# per task or per session) in a config file under the Claude config directory
-# (${CLAUDE_CONFIG_DIR:-$HOME/.claude}). This wrapper reads that file and injects
-# `-host <host>` into every call; the host is never guessed. If no host has been
-# configured yet, the wrapper exits with instructions to ask the user and save
-# it.
-#
-# Requirements on the target device (not installed by this plugin):
-#   * `go` on PATH
-#   * network access to the Go module proxy / github.com
-#   * a reachable tootik instance at the configured host
-#
-# The plugin's SessionStart hook pre-warms the build, so the first real call is
-# fast; a cold run compiles the command and Go caches it for later runs.
 
 config_dir="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/aep-skills"
 host_file="$config_dir/host"
@@ -32,5 +12,12 @@ if [ ! -s "$host_file" ]; then
 fi
 
 host=$(cat "$host_file")
+
+gobin=$(go env GOBIN)
+[ -n "$gobin" ] || gobin="$(go env GOPATH)/bin"
+
+if [ -x "$gobin/tootik-client" ]; then
+	exec "$gobin/tootik-client" -host "$host" "$@"
+fi
 
 exec env CGO_ENABLED=0 go run github.com/dimkr/tootik/cmd/tootik-client@shell -host "$host" "$@"
