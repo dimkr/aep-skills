@@ -6,7 +6,13 @@ allowed-tools: [Bash, Read, Glob, Grep, Edit]
 
 # Improve Plan Using AEPs
 
-You review the current plan file against AEPs (Agent Enhancement Proposals) from tootik-client, then edit the plan to fix violations and incorporate improvements.
+You review the current plan file against AEPs (Agent Enhancement Proposals) from tootik-client, then edit the plan to fix violations and incorporate every requirement the AEPs impose on it.
+
+## Self-Sufficiency Criterion
+
+The plan you produce must stand alone: an executor who follows it from start to finish, **without ever reading an AEP**, must produce work in which `/deep-review` finds no AEP violation.
+
+So every requirement a relevant AEP imposes on the plan's work belongs in the plan's own text - whether the AEP mandates one option among several or states a flat requirement, whether or not the plan already mentions the topic, and at every altitude: architecture and data model, but equally which function to call, which existing helper to reuse, which SQL construct, which flag value. A required implementation detail is still a requirement.
 
 ## Prerequisites
 
@@ -22,7 +28,7 @@ Use tootik-client to view your bookmarks. Follow all pagination links until exha
 
 ## Step 3: Discover AEPs Via Full-Text Search
 
-Extract key topics from the plan: programming languages, technologies, tools, patterns, and product areas mentioned. For each topic, and also for the `#aep` hashtag, use tootik-client's full-text search. Follow all pagination links for each search. Collect paths of all posts found. Deduplicate against bookmarked post paths from Step 2.
+Extract key topics: programming languages, technologies, tools, patterns, and product areas - both those the plan names and those the implementation will unavoidably touch (the files and packages to be modified, their languages, the storage and APIs involved). `/deep-review` searches the diff, so an AEP you miss here becomes a finding later. For each topic, and also for the `#aep` hashtag, use tootik-client's full-text search. Follow all pagination links for each search. Collect paths of all posts found. Deduplicate against bookmarked post paths from Step 2.
 
 ## Step 4: Read All Collected Posts
 
@@ -42,9 +48,9 @@ For each non-retracted AEP:
 
 1. **Check for violations**: Does the plan describe any action, pattern, code approach, or architectural decision that would violate the AEP's rule?
 
-2. **Check for improvement opportunities**: Could the plan be improved by explicitly incorporating the AEP's rule?
+2. **Apply the self-sufficiency test**: if an executor followed this plan literally, knowing nothing of this AEP, could `/deep-review` raise a finding against it? If yes, the plan is missing a requirement - treat that as a violation. Where the AEP has a Detection section, ask whether the plan guarantees that check passes.
 
-3. If neither applies, skip the AEP silently.
+3. If the AEP imposes nothing on the work this plan describes, skip it silently.
 
 ## Step 6: Bookmark and Share Relevant Discovered AEPs
 
@@ -56,7 +62,7 @@ Use the Edit tool to modify the plan file directly:
 
 - **For violations**: Fix the offending section so it no longer violates the AEP.
 
-- **For improvement opportunities**: Add new steps or refine existing ones to incorporate the rule.
+- **For missing requirements**: State each one in the section where the affected work happens - not in a trailing "AEPs considered" list. Be concrete: name the function, construct, or approach to use and the alternative it rules out; give the exact symbol and file path when the requirement is to reuse existing code; put required checks in the plan's verification section. Cite the AEP ID inline as the rationale, e.g. "use a recursive CTE with `UNION ALL`, not `UNION` (AEP-XXXX)", so the requirement reads as mandated rather than arbitrary.
 
 - **Preserve the plan's structure and intent.** Do not rewrite sections unrelated to AEP findings. Make surgical edits.
 
@@ -87,12 +93,12 @@ After editing the plan, output a brief summary:
 - AEPs discovered via search: N
 - Newly bookmarked/shared: N (list AEP IDs)
 - Violations fixed: N (list AEP IDs)
-- Improvements applied: N (list AEP IDs)
+- Requirements incorporated: N (list AEP IDs)
 - AEPs skipped: N
 - Irrelevant: N
 ```
 
-For each violation fixed or improvement applied, include one line:
+For each violation fixed or requirement incorporated, include one line:
 - **AEP-XXXX: <title>** - <what was changed in the plan>
 
 ## Important Constraints
@@ -101,3 +107,4 @@ For each violation fixed or improvement applied, include one line:
 - **No invented paths**: Only use tootik-client paths discovered from actual command output. Run `tootik-client -h` if you need to learn its usage.
 - **Preserve plan coherence**: Edits must not break the logical flow of the plan. If an AEP-driven change conflicts with another, note the conflict and pick the safer option.
 - **Search breadth**: Search for at least the `#aep` hashtag plus one search per key technology/topic in the plan.
+- **Self-sufficiency is the bar**: if executing the plan verbatim, without reading any AEP, could leave a `/deep-review` finding, the plan is not done.
