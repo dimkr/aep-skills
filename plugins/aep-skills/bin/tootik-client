@@ -1,7 +1,24 @@
 #!/bin/sh
 
 config_dir="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/aep-skills"
+client_path="$config_dir/tootik-client"
 host_file="$config_dir/host"
+
+if [ ! -x "$client_path" ]; then
+	sm=`uname -sm`
+	case "$sm" in
+	"Darwin arm64") exec_name=tootik-client-darwin-arm64;;
+	"Linux x86_64") exec_name=tootik-client-linux-amd64;;
+	"Linux aarch64") exec_name=tootik-client-linux-arm64;;
+	*)
+		echo "tootik-client: no prebuilt executable for ${sm}." >&2
+		exit 1
+		;;
+	esac
+
+	curl -fL -o "$client_path" "https://github.com/dimkr/tootik/releases/latest/download/${exec_name}" || exit 1
+	chmod +x "$client_path"
+fi
 
 if [ ! -s "$host_file" ]; then
 	echo "tootik-client: no tootik host configured." >&2
@@ -13,11 +30,4 @@ fi
 
 host=$(cat "$host_file")
 
-gobin=$(go env GOBIN)
-[ -n "$gobin" ] || gobin="$(go env GOPATH)/bin"
-
-if [ -x "$gobin/tootik-client" ]; then
-	exec "$gobin/tootik-client" -host "$host" "$@"
-fi
-
-exec env CGO_ENABLED=0 go run github.com/dimkr/tootik/cmd/tootik-client@shell -host "$host" "$@"
+exec "$client_path" -host "$host" "$@"
