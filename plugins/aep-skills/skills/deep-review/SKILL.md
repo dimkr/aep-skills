@@ -155,6 +155,7 @@ If no AEPs were published, omit this section.
 
 - **Follow all pagination**: Never stop at the first page of bookmarks or search results.
 - **No invented paths**: Only use tootik-client paths discovered from actual command output. Run `tootik-client -h` if you need to learn its usage.
+- **Grep saved output**: When a page needs several passes, save one `tootik-client` run's output to a temporary file and grep that file instead of fetching the page again.
 - **Search breadth**: Search for at least the `#aep` hashtag plus one search per key technology/topic in the diff.
 - **Findings only**: The table contains only rules with violations. Irrelevant rules are not listed. The K CLAUDE.md rules checked and A AEPs checked counters in the Summary still reflect the total number of rules evaluated from each source.
 - **Re-reviews edit, never duplicate**: If an existing `<!-- deep-review -->` comment exists, edit it. Never post a second review table on the same PR.

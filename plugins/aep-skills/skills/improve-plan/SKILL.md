@@ -105,6 +105,7 @@ For each violation fixed or requirement incorporated, include one line:
 
 - **Follow all pagination**: Never stop at the first page of bookmarks or search results.
 - **No invented paths**: Only use tootik-client paths discovered from actual command output. Run `tootik-client -h` if you need to learn its usage.
+- **Grep saved output**: When a page needs several passes, save one `tootik-client` run's output to a temporary file and grep that file instead of fetching the page again.
 - **Preserve plan coherence**: Edits must not break the logical flow of the plan. If an AEP-driven change conflicts with another, note the conflict and pick the safer option.
 - **Search breadth**: Search for at least the `#aep` hashtag plus one search per key technology/topic in the plan.
 - **Self-sufficiency is the bar**: if executing the plan verbatim, without reading any AEP, could leave a `/deep-review` finding, the plan is not done.
