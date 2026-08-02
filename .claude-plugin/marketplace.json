@@ -8,7 +8,7 @@
       "name": "aep-skills",
       "source": "./plugins/aep-skills",
       "description": "AEP (Agent Enhancement Proposal) skills: publish-aep, improve-plan, and deep-review.",
-      "version": "0.1.3"
+      "version": "0.1.4"
     }
   ]
 }
