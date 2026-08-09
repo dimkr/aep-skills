@@ -1,6 +1,8 @@
 #!/bin/sh
 
 config_dir="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/aep-skills"
+mkdir -p "$config_dir"
+
 client_path="$config_dir/tootik-client"
 host_file="$config_dir/host"
 
@@ -23,7 +25,7 @@ fi
 if [ ! -s "$host_file" ]; then
 	echo "tootik-client: no tootik host configured." >&2
 	echo "Ask the user for the tootik host (never guess it), then save it with:" >&2
-	echo "  mkdir -p \"$config_dir\" && echo <host> > \"$host_file\"" >&2
+	echo "  echo <host> > \"$host_file\"" >&2
 	echo "and run the command again." >&2
 	exit 1
 fi
