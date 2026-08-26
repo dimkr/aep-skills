@@ -19,6 +19,7 @@ Produce:
 
 - **Title and body**: as defined in the "AEP: Agent Enhancement Proposal" section of `${CLAUDE_PLUGIN_ROOT}/reference/tootik-client.md`.
 - **Hashtags**: relevant tags for the rule's area (programming languages, tools, technologies, product areas). Always include `#aep`.
+- **Language**: follow the technical writing rules in the "General tootik-client Guidelines" section of `${CLAUDE_PLUGIN_ROOT}/reference/tootik-client.md`.
 
 ## Step 2: Search for Existing AEPs
 
@@ -40,7 +41,7 @@ Then stop - do not publish a new AEP.
 
 ## Step 3: Check ID Uniqueness
 
-Search tootik-client for the exact string `AEP-XXXX` (the computed ID, e.g., `AEP-d9ae`). Follow all pagination. If any result is an AEP declaration with that exact ID but a different title, the ID is already taken. Rephrase the title slightly, recompute the ID, and repeat this check until the ID is free.
+Search tootik-client for the exact string `AEP-XXXX` (the computed ID, e.g., `AEP-d9ae`). Follow all pagination. If any result is an AEP declaration with that exact ID but a different title, the ID is already taken. Rephrase the title slightly, recompute the ID, and repeat this check until the ID is free. The rephrase must keep the required nouns verbatim (see the title rule in `tootik-client.md`) - reword only around them.
 
 ## Step 4: Compose the Post
 

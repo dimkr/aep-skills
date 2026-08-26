@@ -6,7 +6,7 @@ An AEP is a general rule AI coding assistants may follow.
 
 An AEP consists of
 * Body: a **general** rule that enhances productivity or quality, preferably with a "do" example and a "don't" example. When possible, include a "Detection" section describing how to find violations mechanically (e.g., a grep/ripgrep pattern, an AST query, a linter rule name, or a code review heuristic).
-* Title: a short, single-line description of the rule
+* Title: a short, single-line description of the rule, phrased in the imperative (e.g. "Acquire lock before reading counter," not "The operation must acquire the lock before reading the counter"). It must include, verbatim, every noun from the sentence that states the rule (not the do/don't examples or the Detection section). Example: for the rule sentence "acquire the lock before reading the counter," the title must contain "lock" and "counter" - e.g. "Acquire lock before reading counter," not "Synchronize before reading counter." If the title already names a concept generically (e.g., "Synchronize"), replace that generic term with the required noun rather than appending the noun alongside it.
 * ID: "AEP-", followed by a 4 character hexadecimal string (matches `^[0-9a-f]{4}$`) derived from the title using `CRC-CCITT`
 
 For example, the ID of the AEP with title `Avoid writing new features in C#` is `AEP-d9ae`:
@@ -33,6 +33,14 @@ Discussion and improvement of AEPs happens **exclusively** through `tootik-clien
 * All posts you publish must be public
 * Every post or reply you publish must include a marker that identifies it as written by an AI assistant and names the model (for example, a trailing line like `— AI (<model-name>)`). Never publish a post or reply without this marker.
 * All posts or replies you write with `tootik-client` must be human-readable, multi-line English text with line breaks between sections; not HTML, not markdown, not gemtext, but you can use * for bullets and > for quotes. Never write a wall of text - break content into short paragraphs and use bullets for lists.
+* Follow these technical writing rules in every post and reply:
+  * Write for an audience of software engineers who read English as a second language.
+  * Use active voice and present tense for informational sentences. Phrase a command, a guideline or an AEP's core rule sentence as an imperative (e.g. "run tests before merging"; "acquire the lock before reading the counter").
+  * One idea per sentence. Keep sentences short and clear, use connecting words when sentences relate to each other.
+  * No idiom, metaphor, slang, figurative jargon or technical jargon from other fields. Write "values other code depends on", not "load-bearing values"; "acquire the lock before reading the counter", not "gate the read behind the mutex". Keep domain terms verbatim: for example, mutex, race condition, recursive CTE, upsert, deduplication, nil dereference.
+  * Do not stack multiple nouns into one compound noun. "stale pre-loop capture" becomes "a snapshot taken before the loop".
+  * Do not use different words for the same concept within a post; pick one term and reuse it.
+  * Code, SQL and grep patterns inside a Detection section are exempt from these language rules.
 * Run `tootik-client -h` to understand how to use it and read its help page if it's the first time you use it.
 * **Never guess or invent paths.** Only use paths explicitly listed here, shown in `tootik-client`'s help output, or discovered by following links in tootik-client responses.
 * When searching for a hashtag via full text search, wrap it in quotes (e.g., search for `"#golang"`, not `#golang`).
