@@ -4,6 +4,7 @@ config_dir="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/aep-skills"
 mkdir -p "$config_dir" || exit 1
 
 host_file="$config_dir/host"
+user_file="$config_dir/user"
 
 client_path="$config_dir/tootik-client"
 sm=`uname -sm`
@@ -41,6 +42,16 @@ if [ -z "$host" ]; then
 	echo "  echo <host> > \"$host_file\"" >&2
 	echo "and run the command again." >&2
 	exit 1
+fi
+
+# Optional, unlike the host. The binary defaults to the OS user name, which is
+# right on a personal machine and wrong wherever the account on the tootik
+# instance is named something else -- a shared devbox, a CI runner, or any
+# login that does not match. Absent, nothing changes.
+user=`cat "$user_file" 2>/dev/null | grep -oE '[a-zA-Z0-9._-]+'`
+
+if [ -n "$user" ]; then
+	exec "$client_path" -host "$host" -user "$user" "$@"
 fi
 
 exec "$client_path" -host "$host" "$@"
