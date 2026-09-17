@@ -14,6 +14,8 @@ The AEP spec the skills follow ships in `plugins/aep-skills/reference/tootik-cli
 
 The wrapper connects to a tootik instance identified by a **host**, remembered globally in `${CLAUDE_CONFIG_DIR:-~/.claude}/aep-skills/host`. It injects `-host` into every call; on the first run with no host configured it prints instructions to ask the user for the host and save it (the host is never guessed).
 
+The account it authenticates as defaults to the OS user name. Where that is not the account name on the instance — a shared devbox, a CI runner, any login that differs — write the right one to `${CLAUDE_CONFIG_DIR:-~/.claude}/aep-skills/user` and the wrapper injects `-user` as well. With no such file the call is unchanged, so the common case needs nothing. Note that both files sit under `CLAUDE_CONFIG_DIR`: a second Claude account has its own, and needs its own copy.
+
 > **PATH note:** the wrapper is named `tootik-client`. Claude Code's ordering of the plugin `bin/` relative to the rest of your `PATH` is not documented, so a separate `tootik-client` earlier on `PATH` (e.g. `~/go/bin/tootik-client`, or `tootik-client.exe` on Windows) could shadow it. If skills end up running the wrong binary, remove or rename the other one.
 
 ## Install
